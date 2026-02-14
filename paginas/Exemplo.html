@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhoca Race - A Corrida do Caos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --creme: #FFF9E5;
+            --grafite: #2D3436;
+            --rosa: #FF8B94;
+            --marrom: #D1A082;
+            --verde: #93F1BA;
+            --amarelo: #FFF9C4;
+        }
+
+        body {
+            background-color: var(--creme);
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- Estilos da Navbar (Mantidos) --- */
+        nav {
+            width: 100%;
+            background-color: var(--verde);
+            border-bottom: 5px solid var(--grafite);
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: var(--amarelo);
+            border: 4px solid var(--grafite);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: var(--grafite);
+            box-shadow: inset 0 -4px 6px rgba(0,0,0,0.1), inset 0 4px 6px #fff;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--rosa);
+            font-size: 3rem;
+            margin-top: 20px;
+            text-shadow: 2px 2px 0px var(--grafite);
+        }
+
+        /* Botão de Largar */
+        #start-btn {
+            background-color: var(--rosa);
+            color: white;
+            font-size: 1.5rem;
+            padding: 15px 40px;
+            border: 4px solid var(--grafite);
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 0 var(--grafite), inset 0 4px 6px rgba(255,255,255,0.4);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        #start-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--grafite);
+        }
+
+        #start-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: translateY(4px);
+        }
+
+        .arena {
+            width: 80%;
+            max-width: 800px;
+            background: #fff;
+            border: 5px solid var(--grafite);
+            border-radius: 30px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            position: relative;
+        }
+
+        .lane {
+            height: 60px;
+            background-color: var(--marrom);
+            border-radius: 50px;
+            border: 4px solid var(--grafite);
+            position: relative;
+            overflow: visible;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Barra da Minhoca (Claymorphism) */
+        .worm-bar {
+            height: 100%;
+            border-radius: 50px;
+            width: 5%; /* Começa pequenininha */
+            position: relative;
+            /* Importante: transition removida para a animação JS ser fluida */
+            /* transition: width 0.2s linear; */ 
+            
+            box-shadow: 
+                inset 0 6px 10px rgba(255,255,255,0.6), 
+                inset 0 -6px 10px rgba(0,0,0,0.3);
+            border-right: 4px solid var(--grafite);
+            z-index: 1;
+        }
+
+        /* Olhos Cartoon */
+        .eyes {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+        }
+
+        .eye {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid var(--grafite);
+            border-radius: 50%;
+            position: relative;
+            margin-left: -4px; 
+        }
+        
+        .eye:first-child { margin-left: 0; }
+
+        .eye::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--grafite);
+            border-radius: 50%;
+            top: 50%;
+            left: 20%; 
+            transform: translateY(-50%);
+        }
+
+        /* Overlay do Vencedor */
+        #winner-overlay {
+            display: none; /* Escondido por padrão */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .winner-card {
+            background: var(--amarelo);
+            padding: 40px;
+            border-radius: 30px;
+            border: 6px solid var(--grafite);
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            box-shadow: 0 10px 0 rgba(0,0,0,0.2);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .worm-red { background-color: #FF5E5E; }
+        .worm-blue { background-color: #5EADFF; }
+        .worm-green { background-color: #93F1BA; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-btn">Voltar</div>
+        <div class="nav-btn" style="background-color: var(--rosa); color: white;">Arena</div>
+    </nav>
+
+    <h1>Arena do Caos</h1>
+    
+    <button id="start-btn" onclick="startRace()">LARADA!</button>
+
+    <main class="arena">
+        <div class="lane">
+            <div class="worm-bar worm-red" id="worm-1" style="width: 5%;">
+                <div class="eyes"><div class="eye"></div><div class="eye"></div></div>
+            </div>
+        </div>
+
+        <div class="lane">
+            <div class="worm-bar worm-blue" id="worm-2" style="width: 5%;">
+                <div class="eyes"><div class="eye"></div><div class="eye"></div></div>
+            </div>
+        </div>
+
+        <div class="lane">
+            <div class="worm-bar worm-green" id="worm-3" style="width: 5%;">
+                <div class="eyes"><div class="eye"></div><div class="eye"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="winner-overlay">
+        <div class="winner-card">
+            <h2 style="font-size: 2.5rem; color: var(--rosa); margin: 0;">TEMOS UM VENCEDOR!</h2>
+            <p id="winner-name" style="font-size: 1.5rem; color: var(--grafite);">Nome da Minhoca</p>
+            <button class="nav-btn" onclick="resetRace()">Correr de novo</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Configuração das Atletas (Simulando seu Banco de Dados)
+        // No futuro, isso virá do seu array de objetos do backend
+        const racers = [
+            { id: 'worm-1', name: 'Faísca Vermelha', color: 'Vermelho', progress: 5, speed: 0 },
+            { id: 'worm-2', name: 'Trovão Azul', color: 'Azul', progress: 5, speed: 0 },
+            { id: 'worm-3', name: 'Hulk Esmaga', color: 'Verde', progress: 5, speed: 0 }
+        ];
+
+        let raceInterval = null;
+        let isRacing = false;
+
+        // 2. Função para simular o "Caos" (Aqui entraria sua lógica de API)
+        function getChaosSpeed() {
+            // Retorna um valor aleatório entre 0.1 e 0.8
+            // No seu projeto real: return (PrecoBitcoin * FatorVento) / AlgoritmoLouco;
+            return Math.random() * 0.8; 
+        }
+
+        // 3. O Loop da Corrida
+        function startRace() {
+            if (isRacing) return; // Evita cliques duplos
+            isRacing = true;
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('start-btn').innerText = "CORRENDO...";
+
+            // Roda a cada 16ms (aprox 60fps)
+            raceInterval = setInterval(() => {
+                
+                // Itera sobre cada minhoca
+                racers.forEach(worm => {
+                    // AQUI É A MÁGICA: Atualiza a velocidade baseada no caos atual
+                    worm.speed = getChaosSpeed(); 
+                    
+                    // Aumenta o progresso
+                    worm.progress += worm.speed;
+
+                    // Atualiza o DOM (Visual)
+                    const wormElement = document.getElementById(worm.id);
+                    wormElement.style.width = worm.progress + '%';
+
+                    // Checa condição de vitória
+                    if (worm.progress >= 100) {
+                        endRace(worm);
+                    }
+                });
+
+            }, 20); // Velocidade de atualização do loop
+        }
+
+        // 4. Fim da Corrida
+        function endRace(winner) {
+            clearInterval(raceInterval); // Para o loop
+            isRacing = false;
+            
+            // Mostra o modal de vitória
+            const overlay = document.getElementById('winner-overlay');
+            const winnerText = document.getElementById('winner-name');
+            
+            winnerText.innerText = `🏆 ${winner.name} venceu!`;
+            overlay.style.display = 'flex';
+        }
+
+        // 5. Reiniciar
+        function resetRace() {
+            // Esconde modal
+            document.getElementById('winner-overlay').style.display = 'none';
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('start-btn').innerText = "LARADA!";
+
+            // Reseta posições
+            racers.forEach(worm => {
+                worm.progress = 5;
+                const wormElement = document.getElementById(worm.id);
+                wormElement.style.width = '5%';
+            });
+        }
+    </script>
+</body>
+</html>

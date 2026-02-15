@@ -1,0 +1,47 @@
+
+:root {
+    /* Cores Principais */
+
+    /*Verde Claro / Cor principal*/
+    --verde-claro: #93F1BA;
+
+    /*Creme / Cor de fundo e neutra*/
+    --creme: #FFF9E5;
+
+    /*Amarelo Sol / Cor secundária*/
+    --amarelo-sol: #FFF9C4;
+
+    /*Marrom Argila / Cor terciária e botões*/
+    --marrom-argila: #D1A082;
+
+    /*Grafite / Substituição de preto e textos*/
+    --grafite: #4A4A4A;
+
+    /*Cinza mais escuro / Quando o grafite é claro*/
+    --cinza-escuro: #2D3436;
+    
+    /*Rosa Morango / Cor de destaque e títulos*/
+    --rosa-morango: #FF8B94;
+
+
+
+
+
+    /* Tipografia */
+    --fonte-titulo: 'Fredoka One', sans-serif;
+    --fonte-texto: 'Nunito', sans-serif;
+
+}
+
+
+body {
+    font-family: var(--fonte-texto);
+    background-color: var(--creme);
+    color: var(--cinza-escuro);
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fonte-titulo);
+    margin-top: 0;
+}

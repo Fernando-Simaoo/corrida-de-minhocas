@@ -1,0 +1,122 @@
+html {
+    font-size: 100%;
+}
+
+
+:root {
+    /* Cores Principais */
+
+    /*Verde Claro / Cor principal*/
+    --verde-claro: #93F1BA;
+
+    /*Creme / Cor de fundo e neutra*/
+    --creme: #FFF9E5;
+
+    /*Amarelo Sol / Cor secundária*/
+    --amarelo-sol: #FFF9C4;
+
+    /*Marrom Argila / Cor terciária e botões*/
+    --marrom-argila: #D1A082;
+
+    /*Grafite / Substituição de preto e textos*/
+    --grafite: #4A4A4A;
+
+    /*Cinza mais escuro / Quando o grafite é claro*/
+    --cinza-escuro: #2D3436;
+    
+    /*Rosa Morango / Cor de destaque e títulos*/
+    --rosa-morango: #FF8B94;
+
+
+
+
+
+    /* Tipografia */
+    --fonte-titulo: 'Fredoka', sans-serif;
+    --fonte-texto: 'Nunito', sans-serif;
+
+}
+
+
+body {
+    font-family: var(--fonte-texto);
+    background-color: var(--creme);
+    color: var(--cinza-escuro);
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fonte-titulo);
+    margin-top: 0;
+}
+
+.btn-massinha {
+    /* Estrutura: Substituímos px por rem (12px / 16 = 0.75rem) */
+    padding: 0.75rem 1.875rem; 
+    border-radius: 3.125rem; /* 50px para manter o formato pílula */
+    
+    /* Tipografia */
+    font-family: var(--fonte-titulo);
+    font-size: 1.5rem; /* Você já estava usando rem aqui, boa! */
+    font-weight: 600;
+    text-align: center;
+
+    color: var(--cinza-escuro);
+    text-decoration: none;
+    
+    /* Sombras: Usar rem garante que o volume não fique "achatado" em telas grandes */
+    box-shadow: 
+        0 0.375rem 0 var(--grafite), /* 6px */
+        inset 0 -0.375rem 0.5rem rgba(0, 0, 0, 0.15), 
+        inset 0 0.375rem 0.5rem rgba(255, 255, 255, 0.7);
+        
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-massinha:active {
+    transform: translateY(0.25rem); /* 4px */
+    box-shadow: 
+        0 0.125rem 0 var(--grafite), /* 2px */
+        inset 0 -0.375rem 0.5rem rgba(0, 0, 0, 0.15), 
+        inset 0 0.375rem 0.5rem rgba(255, 255, 255, 0.7);
+}
+
+.navbar-caos {
+    background-color: var(--verde-claro);
+    padding: 2.4rem 0; /* 20px */
+    border-bottom: 0.3125rem solid var(--cinza-escuro); /* 5px */
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1.875rem; /* 30px */
+    flex-wrap: wrap; /* ESSENCIAL: Permite que os botões "quebrem" para a linha de baixo no celular */
+}
+
+
+.btn-navbar {
+    background-color: var(--amarelo-sol);
+    font-size : 1.7rem;
+    min-width: 9.375rem;
+
+    /*Sombras*/
+    box-shadow:
+        0 8px 12px rgba(118, 200, 154, 0.60),
+        inset 0 -4px 6px rgba(230,216,122,0.40),
+        inset 0 4px 4px rgba(255, 255, 255, 0.5);
+
+}
+
+.btn-navbar:active {
+    transform: translateY(0.25rem);
+
+    box-shadow: 
+        0 2px 4px rgba(118, 200, 154, 0.60), 
+        inset 0 -4px 6px rgba(230,216,122,0.40), 
+        inset 0 4px 4px rgba(255, 255, 255, 0.5);
+}
+
+
+.btn-marrom {
+    background-color: var(--marrom-argila);
+}

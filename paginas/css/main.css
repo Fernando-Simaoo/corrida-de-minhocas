@@ -45,6 +45,21 @@ body {
     margin: 0;
 }
 
+/*
+ ________  __                      __                      __           
+/        |/  |                    /  |                    /  |          
+$$$$$$$$/ $$/   ______    ______  $$ |  ______    ______  $$/   ______  
+   $$ |   /  | /      \  /      \ $$ | /      \  /      \ /  | /      \ 
+   $$ |   $$ |/$$$$$$  |/$$$$$$  |$$ |/$$$$$$  |/$$$$$$  |$$ | $$$$$$  |
+   $$ |   $$ |$$ |  $$ |$$ |  $$ |$$ |$$ |  $$ |$$ |  $$ |$$ | /    $$ |
+   $$ |   $$ |$$ |__$$ |$$ \__$$ |$$ |$$ \__$$ |$$ \__$$ |$$ |/$$$$$$$ |
+   $$ |   $$ |$$    $$/ $$    $$/ $$ |$$    $$/ $$    $$ |$$ |$$    $$ |
+   $$/    $$/ $$$$$$$/   $$$$$$/  $$/  $$$$$$/   $$$$$$$ |$$/  $$$$$$$/ 
+              $$ |                              /  \__$$ |              
+              $$ |                              $$    $$/               
+              $$/                                $$$$$$/                
+*/
+
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--fonte-titulo);
     margin-top: 0;
@@ -54,7 +69,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--rosa-morango);
     font-size: 3.7rem;
     text-align: center;
-    margin: 4rem 0;
+    margin: 3rem 0;
 
 }
 
@@ -72,6 +87,15 @@ h1, h2, h3, h4, h5, h6 {
     text-indent: 3rem;
 
 
+}
+
+.subtitulo {
+    font-family: var(--fonte-texto);
+    font-size: 1.6rem;
+    text-align: center;      /* Centraliza perfeitamente */
+    color: var(--grafite);
+    font-style: italic;      /* Mantém o itálico charmoso do seu design */
+    margin-bottom: 3rem;     /* Dá um bom espaço antes de chegarem os botões */
 }
 
 .btn-massinha {
@@ -157,8 +181,75 @@ h1, h2, h3, h4, h5, h6 {
         inset 0 -4px 6px rgba(230,216,122,0.40), 
         inset 0 4px 4px rgba(255, 255, 255, 0.5);
 }
+/*
+ _______               __                                   
+/       \             /  |                                  
+$$$$$$$  |  ______   _$$ |_     ______    ______    _______ 
+$$ |__$$ | /      \ / $$   |   /      \  /      \  /       |
+$$    $$< /$$$$$$  |$$$$$$/   /$$$$$$  |/$$$$$$  |/$$$$$$$/ 
+$$$$$$$  |$$ |  $$ |  $$ | __ $$ |  $$ |$$    $$ |$$      \ 
+$$ |__$$ |$$ \__$$ |  $$ |/  |$$ \__$$ |$$$$$$$$/  $$$$$$  |
+$$    $$/ $$    $$/   $$  $$/ $$    $$/ $$       |/     $$/ 
+$$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/  
+                                                            
+
+*/
+
+.caixa-botoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 1.875rem; /* 30px */
+
+    max-width: 45rem;
+    margin: 0 auto; /* Centraliza a caixa de botões */
+    justify-content: center;
+}
+
+.botao-crud {
+    background-color: var(--marrom-argila);
+    font-size: 1.7rem;
+    padding: 0.65rem 0.7rem;
+    width: 100%; /* Garante que o botão ocupe toda a largura da coluna do grid */
+
+
+    /* Sombras */
+    box-shadow: 
+        0 0.375rem 0.75rem rgba(122, 78, 53, 0.30), /* 6px */
+        inset 0 -0.375rem 0.5rem rgba(122, 78, 53, 0.50), 
+        inset 0 0.375rem 0.5rem rgba(255, 255, 255, 0.7);
+
+}
+
+.botao-crud:active {
+    transform: translateY(0.25rem);
+    box-shadow: 
+        0 0.125rem 0.25rem rgba(122, 78, 53, 0.30), /* 2px */
+        inset 0 -0.375rem 0.5rem rgba(122, 78, 53, 0.50), 
+        inset 0 0.375rem 0.5rem rgba(255, 255, 255, 0.7);
+}
 
 
 .btn-marrom {
     background-color: var(--marrom-argila);
 }
+
+
+
+
+
+
+
+
+
+/*
+ __     __                                                         __       __            __        __  __           
+/  |   /  |                                                       /  \     /  |          /  |      /  |/  |          
+$$ |   $$ | ______    ______    _______   ______    ______        $$  \   /$$ |  ______  $$ |____  $$/ $$ |  ______  
+$$ |   $$ |/      \  /      \  /       | /      \  /      \       $$$  \ /$$$ | /      \ $$      \ /  |$$ | /      \ 
+$$  \ /$$//$$$$$$  |/$$$$$$  |/$$$$$$$/  $$$$$$  |/$$$$$$  |      $$$$  /$$$$ |/$$$$$$  |$$$$$$$  |$$ |$$ |/$$$$$$  |
+ $$  /$$/ $$    $$ |$$ |  $$/ $$      \  /    $$ |$$ |  $$ |      $$ $$ $$/$$ |$$ |  $$ |$$ |  $$ |$$ |$$ |$$    $$ |
+  $$ $$/  $$$$$$$$/ $$ |       $$$$$$  |/$$$$$$$ |$$ \__$$ |      $$ |$$$/ $$ |$$ \__$$ |$$ |__$$ |$$ |$$ |$$$$$$$$/ 
+   $$$/   $$       |$$ |      /     $$/ $$    $$ |$$    $$/       $$ | $/  $$ |$$    $$/ $$    $$/ $$ |$$ |$$       |
+    $/     $$$$$$$/ $$/       $$$$$$$/   $$$$$$$/  $$$$$$/        $$/      $$/  $$$$$$/  $$$$$$$/  $$/ $$/  $$$$$$$/ 
+                                                                                                                                                                                                                                       
+*/

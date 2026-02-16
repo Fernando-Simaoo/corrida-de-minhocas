@@ -1,4 +1,3 @@
-window.alert("Javascript Conectado!");
 let minhocaId = 0;
 class minhoca {
     constructor(nome,cor){

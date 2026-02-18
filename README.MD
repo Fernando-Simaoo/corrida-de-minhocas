@@ -6,6 +6,7 @@ Este projeto será sobre uma corrida de minhocas em uma página HTML, a arte ser
  #FF8B94 Rosa Morango, Acento, Botões, Destaque
  #FFF9C4 Amarelo Sol, Destaque, detalhes de brilho
  #4A4A4A Grafite Suave, Texto, um preto mais macio 
+ #2D3436 Um cinza mais escuro, pra quando o grafite é claro demais
 
 
 # FONTES

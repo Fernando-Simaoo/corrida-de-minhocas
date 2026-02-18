@@ -45,3 +45,38 @@ function excluir_minhoca(id) {
         console.log("Minhoca não encontrada.");
     }
 }
+
+
+/*
+
+INTERAÇÃO COM O DOM
+
+*/
+
+const grid_minhocas = document.getElementsByClassName("grid-minhocas");
+function criar_card(nome, corHex, id){
+    // Inicializar um li vazio na memória do navegador
+    const li = document.createElement("li");
+
+    // Adiciona a classe para estilizar
+    li.classList.add("card-minhoca");
+
+    // Injeta a estrutura HTML dentro do <li> usando crases (Template String)
+    // Observe os ${variavel} inserindo os dados dinamicamente!
+
+    li.innerHTML = `
+        <h3 class="nome-minhoca">${nome}</h3>
+        <div class="info-cor">
+            <span class="label-card">Cor:</span>
+            <div class="bolinha-cor" style="background-color: ${corHex};"></div>
+        </div>
+        <span class="id-minhoca">ID: ${id}</span>
+    `;
+
+    // Pendura o card finalizado lá na tela, dentro da <ul>
+    grid_minhocas[0].appendChild(li);
+
+
+
+
+}

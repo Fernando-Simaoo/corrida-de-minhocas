@@ -356,7 +356,7 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
 #form-cadastro{
 /* Remova o height: 30rem; fixo para ele se adaptar ao conteúdo! */
     height: 93%;
-    width: 72%;
+    width: 90%;
     max-width: 44rem;
     background-color: var(--verde-claro);
     border-radius: 2.5rem; /* Mais arredondado para ficar fofo */
@@ -364,7 +364,7 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
     padding: 3rem; /* Dá um bom respiro interno */
     position: relative; /* Necessário para o botão "X" ficar no canto */
     display: flex;
-    gap: 2.5rem;
+    gap: 3rem;
     flex-direction: column;
 
     /* Suas sombras perfeitas (mantidas) */
@@ -381,8 +381,8 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
     background-color: var(--verde-claro);
 }
 
-#form-deletar {
-        height: 65vh;
+#form-excluir {
+    height: 65vh;
     width: 40vw;
     background-color: var(--verde-claro);
 }
@@ -420,6 +420,28 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
     outline: none;
 }
 
+.btn-modal {
+    background-color: var(--marrom-argila);
+    font-size: 2rem;
+    padding: 0.8rem 8.3rem;
+    align-self: center; /* A Mágica: isso centraliza apenas o botão, deixando ele do tamanho do texto! */
+    
+    /* Copie as mesmas sombras que você usou no botao-crud aqui */
+    box-shadow: 
+        0 0.375rem 0.75rem rgba(122, 78, 53, 0.30), 
+        inset 0 -0.375rem 0.5rem rgba(122, 78, 53, 0.50), 
+        inset 0 0.375rem 0.5rem rgba(255, 255, 255, 0.7);
+}
+.btn-modal:active {
+    transform: translateY(0.25rem);
+    box-shadow: 
+        0 0.125rem 0.25rem rgba(122, 78, 53, 0.30), 
+        inset 0 -0.375rem 0.5rem rgba(122, 78, 53, 0.50), 
+        inset 0 0.375rem 0.5rem rgba(255, 255, 255, 0.7);
+}
+
+
+
 /* =========================================
    O TRUQUE DO SELETOR DE CORES
    ========================================= */
@@ -431,7 +453,10 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
 }
 
 .radio-cor input { 
-    display: none; 
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .bolinha-seletor {
@@ -473,6 +498,10 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
 
 .btn-fechar-modal:active {
     transform: scale(0.9);
+}
+
+.text-center {
+    text-align: center;
 }
 
 /*

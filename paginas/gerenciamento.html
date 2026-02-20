@@ -36,10 +36,10 @@
         <p class="subtitulo">Aqui você pode gerenciar as minhoquinhas que vão participar da corrida!</p>
 
         <div class="caixa-botoes">
-                    <button class="btn-massinha botao-crud">Cadastrar minhoquinhas</button>
-                    <button class="btn-massinha botao-crud">Listar minhoquinhas</button>
-                    <button class="btn-massinha botao-crud">Atualizar minhoquinhas</button>
-                    <button class="btn-massinha botao-crud">Excluir minhoquinhas</button>
+                    <button class="btn-massinha botao-crud" onclick="ToggleOverlay('overlay-cadastro')">Cadastrar minhoquinhas</button>
+                    <button class="btn-massinha botao-crud" >Listar minhoquinhas</button>
+                    <button class="btn-massinha botao-crud" onclick="ToggleOverlay('overlay-atualizar')">Atualizar minhoquinhas</button>
+                    <button class="btn-massinha botao-crud" onclick="ToggleOverlay('overlay-excluir')">Excluir minhoquinhas</button>
         </div>
         <p class="subtitulo" style="font-size: 2rem;"> Minhoquinhas cadastradas: </p>
 
@@ -59,6 +59,64 @@
         </ul>
 
 
+            <div class="Overlay" id="overlay-cadastro">
+                <form id="form-cadastro">
+                    <button type="button" class="btn-fechar-modal" onclick="ToggleOverlay('overlay-cadastro')"></button>
 
+                    <h2 class="modal-titulo">Cadastrar Minhoca</h2>
+
+                    <div class="campo-form">
+                        <label for="nome-cadastro" class="modal-label">Nome da Minhoca:</label>
+                        <input  type="text" id="nome-cadastro" class="modal-input" placeholder="Ex: Minhocona gorda" required>
+                    </div>
+
+                    <div class="campo-form" style="text-align: center; margin-top: 2rem;">
+                        <label class="modal-label">Escolha sua cor:</label>
+
+                        <div class="seletor-cores">
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-cadastro" value="#FF8B94" required>
+                                <span class="bolinha-seletor" style="background-color: #FF8B94;"></span>
+                            </label>
+
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-cadastro" value="#6B9DF2">
+                                <span class="bolinha-seletor" style="background-color: #6B9DF2;"></span>
+                            </label>
+
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-cadastro" value="#A56EEB">
+                                <span class="bolinha-seletor" style="background-color: #A56EEB;"></span>
+                            </label>
+
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-cadastro" value="#FFB347">
+                                <span class="bolinha-seletor" style="background-color: #FFB347;"></span>
+                            </label>
+
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-cadastro" value="#3C6E47">
+                                <span class="bolinha-seletor" style="background-color: #3C6E47;"></span>
+                            </label>
+                        </div>
+                    </div>
+
+
+
+                        <button type="submit" class="btn-massinha botao-crud">Cadastrar Minhoquinha </button>
+                    
+
+                </form>
+            </div>
+            <div class="Overlay" id="overlay-atualizar">
+                <form id="form-atualizar">
+
+                </form>
+            </div>
+            <div class="Overlay" id="overlay-excluir">
+                <form id="form-excluir">
+
+                </form>
+            </div>
     </body>
 </html>

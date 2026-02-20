@@ -1,3 +1,14 @@
+/*
+  /$$$$$$                            /$$       /$$$$$$$                      /$$                    
+ /$$__  $$                          | $$      | $$__  $$                    |__/                    
+| $$  \__/  /$$$$$$  /$$   /$$  /$$$$$$$      | $$  \ $$  /$$$$$$   /$$$$$$$ /$$  /$$$$$$$  /$$$$$$ 
+| $$       /$$__  $$| $$  | $$ /$$__  $$      | $$$$$$$  |____  $$ /$$_____/| $$ /$$_____/ /$$__  $$
+| $$      | $$  \__/| $$  | $$| $$  | $$      | $$__  $$  /$$$$$$$|  $$$$$$ | $$| $$      | $$  \ $$
+| $$    $$| $$      | $$  | $$| $$  | $$      | $$  \ $$ /$$__  $$ \____  $$| $$| $$      | $$  | $$
+|  $$$$$$/| $$      |  $$$$$$/|  $$$$$$$      | $$$$$$$/|  $$$$$$$ /$$$$$$$/| $$|  $$$$$$$|  $$$$$$/
+ \______/ |__/       \______/  \_______/      |_______/  \_______/|_______/ |__/ \_______/ \______/                                                                                                     
+*/
+
 let minhocaId = 0;
 class minhoca {
     constructor(nome,cor){
@@ -48,12 +59,20 @@ function excluir_minhoca(id) {
 
 
 /*
-
-INTERAÇÃO COM O DOM
-
+ /$$$$$$             /$$                                                                      /$$$$$$$   /$$$$$$  /$$      /$$
+|_  $$_/            | $$                                                                     | $$__  $$ /$$__  $$| $$$    /$$$
+  | $$   /$$$$$$$  /$$$$$$    /$$$$$$   /$$$$$$  /$$$$$$   /$$$$$$$  /$$$$$$   /$$$$$$       | $$  \ $$| $$  \ $$| $$$$  /$$$$
+  | $$  | $$__  $$|_  $$_/   /$$__  $$ /$$__  $$|____  $$ /$$_____/ |____  $$ /$$__  $$      | $$  | $$| $$  | $$| $$ $$/$$ $$
+  | $$  | $$  \ $$  | $$    | $$$$$$$$| $$  \__/ /$$$$$$$| $$        /$$$$$$$| $$  \ $$      | $$  | $$| $$  | $$| $$  $$$| $$
+  | $$  | $$  | $$  | $$ /$$| $$_____/| $$      /$$__  $$| $$       /$$__  $$| $$  | $$      | $$  | $$| $$  | $$| $$\  $ | $$
+ /$$$$$$| $$  | $$  |  $$$$/|  $$$$$$$| $$     |  $$$$$$$|  $$$$$$$|  $$$$$$$|  $$$$$$/      | $$$$$$$/|  $$$$$$/| $$ \/  | $$
+|______/|__/  |__/   \___/   \_______/|__/      \_______/ \_______/ \_______/ \______/       |_______/  \______/ |__/     |__/                                                                                                                              
 */
 
 const grid_minhocas = document.getElementsByClassName("grid-minhocas");
+const todosOverlays = document.querySelectorAll(".Overlay");
+
+
 function criar_card(nome, corHex, id){
     // Inicializar um li vazio na memória do navegador
     const li = document.createElement("li");
@@ -75,8 +94,12 @@ function criar_card(nome, corHex, id){
 
     // Pendura o card finalizado lá na tela, dentro da <ul>
     grid_minhocas[0].appendChild(li);
+}
 
+function ToggleOverlay(id){
+    const overlay = document.getElementById(id);
 
+    overlay.classList.toggle('ativo');
 
-
+    document.body.classList.toggle('travar-scroll');
 }

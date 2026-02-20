@@ -71,6 +71,22 @@ function excluir_minhoca(id) {
 
 const grid_minhocas = document.getElementsByClassName("grid-minhocas");
 const todosOverlays = document.querySelectorAll(".Overlay");
+const formCadastro = document.getElementById("form-cadastro");
+
+formCadastro.addEventListener("submit", (event) => {
+
+    event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
+
+    const nome = document.getElementById("nome-cadastro").value;
+    const cor = document.querySelector('input[name="cor-cadastro"]:checked').value;
+
+    cadastrar_minhoca(nome, cor);
+
+    criar_card(nome, cor, minhocaId - 1); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
+
+    formCadastro.reset(); // Reseta o formulário
+    ToggleOverlay("overlay-cadastro"); // Fecha o modal após cadastrar
+})
 
 
 function criar_card(nome, corHex, id){

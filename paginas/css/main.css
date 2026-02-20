@@ -300,6 +300,7 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
     font-weight: 600;
     color: var(--cinza-escuro);
     margin: 0;
+    text-align: center;
 }
 
 .info-cor {
@@ -471,8 +472,8 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
 }
 
 .radio-cor input:checked + .bolinha-seletor {
-    transform: scale(1.15); /* Dá uma leve crescida */
-    border: 0.25rem solid var(--creme); /* Ganha o aro branco */
+    transform: scale(1.5); /* Dá uma leve crescida */
+    border: 0.2rem solid var(--creme); /* Ganha o aro branco */
 }
 
 .btn-fechar-modal {

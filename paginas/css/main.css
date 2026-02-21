@@ -377,15 +377,68 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
 }
 
 #form-atualizar {
-        height: 65vh;
-    width: 40vw;
+/* Remova o height: 30rem; fixo para ele se adaptar ao conteúdo! */
+    height: 96%;
+    width: 90%;
+    max-width: 44rem;
     background-color: var(--verde-claro);
+    border-radius: 2.5rem; /* Mais arredondado para ficar fofo */
+    box-sizing: border-box;
+    padding: 2rem; /* Dá um bom respiro interno */
+    position: relative; /* Necessário para o botão "X" ficar no canto */
+    display: flex;
+    gap: 1.6rem;
+    flex-direction: column;
+
+    /* Suas sombras perfeitas (mantidas) */
+    box-shadow: 
+        0 0.5rem 0.75rem rgba(74, 74, 74, 0.25), 
+        inset 0 -0.45rem 0.375rem rgba(107, 201, 146, 0.40), 
+        inset 0 0.25rem 0.25rem rgba(255, 255, 255, 0.5);
+
+}
+
+:is(#form-atualizar, #form-excluir) .modal-label {
+    margin-bottom: 0.5rem;
+
 }
 
 #form-excluir {
-    height: 65vh;
-    width: 40vw;
+/* Remova o height: 30rem; fixo para ele se adaptar ao conteúdo! */
+    height: 93%;
+    width: 90%;
+    max-width: 44rem;
     background-color: var(--verde-claro);
+    border-radius: 2.5rem; /* Mais arredondado para ficar fofo */
+    box-sizing: border-box;
+    padding: 2rem; /* Dá um bom respiro interno */
+    position: relative; /* Necessário para o botão "X" ficar no canto */
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+
+    /* Suas sombras perfeitas (mantidas) */
+    box-shadow: 
+        0 0.5rem 0.75rem rgba(74, 74, 74, 0.25), 
+        inset 0 -0.45rem 0.375rem rgba(107, 201, 146, 0.40), 
+        inset 0 0.25rem 0.25rem rgba(255, 255, 255, 0.5);
+
+}
+
+#form-excluir .subtitulo {
+    margin: 1.3rem 0 0rem 0;
+}
+
+#form-excluir .btn-modal {
+    align-self: center; /* Centraliza o botão dentro do form */
+    padding: 0.8rem 9.6rem;
+}
+
+#form-excluir .card-minhoca {
+    width: 13.33rem;
+    aspect-ratio: 1 / 1;
+    align-self: center;
+    margin: 0 auto;
 }
 
 .modal-titulo {
@@ -500,6 +553,7 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
 .btn-fechar-modal:active {
     transform: scale(0.9);
 }
+
 
 .text-center {
     text-align: center;

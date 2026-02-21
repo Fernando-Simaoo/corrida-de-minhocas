@@ -35,6 +35,8 @@
         <h1 class="titulo-destaque"> Gerenciamento </h1>
         <p class="subtitulo">Aqui você pode gerenciar as minhoquinhas que vão participar da corrida!</p>
 
+
+        <!--BOTÕES DE GERENCIAMENTO-->
         <div class="caixa-botoes">
                     <button class="btn-massinha botao-crud" onclick="ToggleOverlay('overlay-cadastro')">Cadastrar minhoquinhas</button>
                     <button class="btn-massinha botao-crud" >Listar minhoquinhas</button>
@@ -43,6 +45,7 @@
         </div>
         <p class="subtitulo" style="font-size: 2rem;"> Minhoquinhas cadastradas: </p>
 
+        <!--GRID DAS MINHOCAS-->
         <ul class="grid-minhocas">
             
             <li class="card-minhoca">
@@ -58,7 +61,7 @@
 
         </ul>
 
-
+        <!--OVERLAYS DE CRUD-->
             <div class="Overlay" id="overlay-cadastro">
                 <form id="form-cadastro">
                     <button type="button" class="btn-fechar-modal" onclick="ToggleOverlay('overlay-cadastro')"></button>
@@ -110,12 +113,87 @@
             </div>
             <div class="Overlay" id="overlay-atualizar">
                 <form id="form-atualizar">
+                 <button type="button" class="btn-fechar-modal" onclick="ToggleOverlay('overlay-atualizar')"></button>
 
+                    <h2 class="modal-titulo">Atualizar Minhoca</h2>
+
+
+                    <div class="campo-form">
+                        <label for="Id-atualizar" class="modal-label">Id da Minhoca:</label>
+                        <input  type="text" id="Id-atualizar" class="modal-input" placeholder="Ex: Minhocona gorda" required>
+                    </div>
+
+
+                    <div class="campo-form">
+                        <label for="nome-atualizar" class="modal-label">Nome da Minhoca:</label>
+                        <input  type="text" id="nome-atualizar" class="modal-input" placeholder="Ex: Minhocona gorda" required>
+                    </div>
+
+                    <div class="campo-form text-center">
+                        <label class="modal-label">Escolha sua cor:</label>
+
+                        <div class="seletor-cores">
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-atualizar" value="#FF8B94" required>
+                                <span class="bolinha-seletor" style="background-color: #FF8B94;"></span>
+                            </label>
+
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-atualizar" value="#6B9DF2">
+                                <span class="bolinha-seletor" style="background-color: #6B9DF2;"></span>
+                            </label>
+
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-atualizar" value="#A56EEB">
+                                <span class="bolinha-seletor" style="background-color: #A56EEB;"></span>
+                            </label>
+
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-atualizar" value="#FFB347">
+                                <span class="bolinha-seletor" style="background-color: #FFB347;"></span>
+                            </label>
+
+                            <label class="radio-cor">
+                                <input type="radio" name="cor-atualizar" value="#3C6E47">
+                                <span class="bolinha-seletor" style="background-color: #3C6E47;"></span>
+                            </label>
+                        </div>
+                    </div>
+
+
+
+                        <button type="submit" class="btn-massinha btn-modal">Cadastrar Minhoquinha </button>
                 </form>
             </div>
             <div class="Overlay" id="overlay-excluir">
                 <form id="form-excluir">
+                    <button type="button" class="btn-fechar-modal" onclick="ToggleOverlay('overlay-excluir')"></button>
 
+                    <h2 class="modal-titulo">Excluir Minhoca</h2>
+
+                    <div class="campo-form">
+                        <label for="Id-atualizar" class="modal-label">Id da Minhoca:</label>
+                        <input  type="text" id="Id-atualizar" class="modal-input" placeholder="Ex: Minhocona gorda" required>
+                    </div>
+
+        <div>
+            <div class="card-minhoca">
+                <h3 class="nome-minhoca">Placeholder</h3>
+                
+                <div class="info-cor">
+                    <span class="label-card">Cor:</span>
+                    <div class="bolinha-cor" style="background-color: pink;"></div>
+                </div>
+                
+                <span class="id-minhoca">ID: 12345</span>
+            </div>
+            <p id="isMinhocaFound" class="subtitulo">Minhoca não encontrada ainda</p>
+        </div>
+
+
+                    
+                     <button type="submit" class="btn-massinha btn-modal">Excluir Minhoquinha </button>
+                    
                 </form>
             </div>
     </body>

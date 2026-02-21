@@ -303,6 +303,18 @@ $$$$$$$/   $$$$$$/     $$$$/   $$$$$$/   $$$$$$$/ $$$$$$$/
     text-align: center;
 }
 
+.nome-minhoca {
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+
+/* A Mágica das Múltiplas Linhas (Line Clamp) */
+    display: -webkit-box;
+    line-clamp: 2; /* Aqui você define o limite de linhas! */
+    -webkit-box-orient: vertical;
+    overflow: hidden; /* Esconde o que tentar passar da segunda linha */
+}
+
 .info-cor {
     display: flex;
     align-items: center;

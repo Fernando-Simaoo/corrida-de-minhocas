@@ -71,7 +71,11 @@ function excluir_minhoca(id) {
 
 const grid_minhocas = document.getElementsByClassName("grid-minhocas");
 const todosOverlays = document.querySelectorAll(".Overlay");
+
+// Formulários dos modais
 const formCadastro = document.getElementById("form-cadastro");
+const formAtualizar = document.getElementById("form-atualizar");
+const formExcluir = document.getElementById("form-excluir");
 
 
 function criar_card(nome, corHex, id){
@@ -81,20 +85,38 @@ function criar_card(nome, corHex, id){
     // Adiciona a classe para estilizar
     li.classList.add("card-minhoca");
 
+    
     // Injeta a estrutura HTML dentro do <li> usando crases (Template String)
     // Observe os ${variavel} inserindo os dados dinamicamente!
-
+    
     li.innerHTML = `
-        <h3 class="nome-minhoca">${nome}</h3>
-        <div class="info-cor">
-            <span class="label-card">Cor:</span>
-            <div class="bolinha-cor" style="background-color: ${corHex};"></div>
-        </div>
-        <span class="id-minhoca">ID: ${id}</span>
+    <h3 class="nome-minhoca">${nome}</h3>
+    <div class="info-cor">
+    <span class="label-card">Cor:</span>
+    <div class="bolinha-cor" style="background-color: ${corHex};"></div>
+    </div>
+    <span class="id-minhoca">ID: ${id}</span>
     `;
+
+    li.id = `card-${id}`; // Dá um ID único pro card, pra facilitar futuras manipulações (atualizar, excluir, etc)
 
     // Pendura o card finalizado lá na tela, dentro da <ul>
     grid_minhocas[0].appendChild(li);
+}
+
+function atualizar_card(id, novoNome, novaCorHex){
+    const card = document.getElementById(`card-${id}`);
+
+
+    if(card){
+        card.querySelector(".nome-minhoca").textContent = novoNome;
+        card.querySelector(".bolinha-cor").style.backgroundColor = novaCorHex;
+
+        console.log(`Card com ID ${id} atualizado para Nome: ${novoNome} e Cor: ${novaCorHex}`);
+    }else{
+        console.log(`Card com ID ${id} não encontrado para atualização.`);
+    }
+
 }
 
 function ToggleOverlay(id){
@@ -136,4 +158,20 @@ formCadastro.addEventListener("submit", (event) => {
 
     formCadastro.reset(); // Reseta o formulário
     ToggleOverlay("overlay-cadastro"); // Fecha o modal após cadastrar
+})
+
+formAtualizar.addEventListener("submit", (event) => {
+
+    event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
+
+    const id = parseInt(document.getElementById("Id-atualizar").value);
+    const NovoNome = document.getElementById("nome-atualizar").value;
+    const NovaCor = document.querySelector('input[name="cor-atualizar"]:checked').value;
+
+    atualizar_minhoca(id, NovoNome, NovaCor);
+
+    atualizar_card(id,NovoNome,NovaCor); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
+
+    formAtualizar.reset(); // Reseta o formulário
+    ToggleOverlay("overlay-atualizar"); // Fecha o modal após cadastrar
 })

@@ -11,7 +11,7 @@
 
 let minhocaId = 0;
 class minhoca {
-    constructor(nome,cor){
+    constructor(nome, cor) {
         this.id = minhocaId++;
         this.nome = nome;
         this.cor = cor;
@@ -77,18 +77,29 @@ const formCadastro = document.getElementById("form-cadastro");
 const formAtualizar = document.getElementById("form-atualizar");
 const formExcluir = document.getElementById("form-excluir");
 
+//Constantes especiais do form Excluir
+const inputExcluir = document.getElementById("Id-excluir");
+const cardExclusaoPreview = document.getElementById("CardExclusao");
+const textoStatusExcluir = document.getElementById("isMinhocaFound");
 
-function criar_card(nome, corHex, id){
+cardExclusaoPreview.classList.add("escondido");
+
+
+//Constantes da arena
+const listaPistas = document.getElementById('pistas');
+
+
+function criar_card(nome, corHex, id) {
     // Inicializar um li vazio na memória do navegador
     const li = document.createElement("li");
 
     // Adiciona a classe para estilizar
     li.classList.add("card-minhoca");
 
-    
+
     // Injeta a estrutura HTML dentro do <li> usando crases (Template String)
     // Observe os ${variavel} inserindo os dados dinamicamente!
-    
+
     li.innerHTML = `
     <h3 class="nome-minhoca">${nome}</h3>
     <div class="info-cor">
@@ -104,27 +115,44 @@ function criar_card(nome, corHex, id){
     grid_minhocas[0].appendChild(li);
 }
 
-function atualizar_card(id, novoNome, novaCorHex){
+function atualizar_card(id, novoNome, novaCorHex) {
     const card = document.getElementById(`card-${id}`);
 
 
-    if(card){
+    if (card) {
         card.querySelector(".nome-minhoca").textContent = novoNome;
         card.querySelector(".bolinha-cor").style.backgroundColor = novaCorHex;
 
         console.log(`Card com ID ${id} atualizado para Nome: ${novoNome} e Cor: ${novaCorHex}`);
-    }else{
+    } else {
         console.log(`Card com ID ${id} não encontrado para atualização.`);
     }
 
 }
 
-function ToggleOverlay(id){
+function excluir_card(id) {
+    const card = document.getElementById(`card-${id}`);
+    if (card) {
+        card.remove(); // Só arranca a tag do HTML
+        console.log(`Card ${id} removido da interface`);
+    }
+}
+
+function ToggleOverlay(id) {
     const overlay = document.getElementById(id);
 
     overlay.classList.toggle('ativo');
 
     document.body.classList.toggle('travar-scroll');
+}
+
+function ToggleCard() {
+    const CardExclusao = document.getElementById('CardExclusao');
+    const isMinhocaFound = document.getElementById('isMinhocaFound');
+
+    CardExclusao.classList.toggle('escondido');
+    isMinhocaFound.innerHTML.toggle("MInhoca Encontrada, tem certeza disso?");
+
 }
 
 /*
@@ -170,8 +198,94 @@ formAtualizar.addEventListener("submit", (event) => {
 
     atualizar_minhoca(id, NovoNome, NovaCor);
 
-    atualizar_card(id,NovoNome,NovaCor); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
+    atualizar_card(id, NovoNome, NovaCor); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
 
     formAtualizar.reset(); // Reseta o formulário
     ToggleOverlay("overlay-atualizar"); // Fecha o modal após cadastrar
 })
+
+// RADAR
+
+inputExcluir.addEventListener("input", (event) => {
+    const idDigitado = parseInt(event.target.value);
+    const minhocaEncontrada = minhocas.find(m => m.id === idDigitado);
+
+    if (minhocaEncontrada) {
+        // Minhoca Achada
+        cardExclusaoPreview.querySelector(".nome-minhoca").textContent = minhocaEncontrada.nome;
+        cardExclusaoPreview.querySelector(".bolinha-cor").style.backgroundColor = minhocaEncontrada.cor;
+        cardExclusaoPreview.querySelector(".id-minhoca").textContent = `ID: ${minhocaEncontrada.id}`;
+
+        // Mostra o card
+        cardExclusaoPreview.classList.remove("escondido");
+        textoStatusExcluir.textContent = "Minhoca Encontrada! Tem certeza disso?";
+        textoStatusExcluir.style.color = "var(--rosa-morango)";
+
+    } else {
+        cardExclusaoPreview.classList.add("escondido");
+        textoStatusExcluir.textContent = "Minhoca não encontrada ainda...";
+        textoStatusExcluir.style.color = "var(--grafite)";
+    }
+})
+
+
+
+
+//SUBMIT DO EXCLUIR
+
+formExcluir.addEventListener("submit", (event) => {
+
+    event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
+
+    const id = parseInt(inputExcluir.value);
+
+    excluir_minhoca(id);
+    excluir_card(id); // FUNÇÃO AINDA NÃO CRIADA        
+
+    formExcluir.reset(); // Reseta o formulário
+    cardExclusaoPreview.classList.add("escondido");
+    textoStatusExcluir.textContent = "Minhoca não encontrada ainda...";
+    textoStatusExcluir.style.color = "var(--grafite)";
+    ToggleOverlay("overlay-excluir"); // Fecha o modal após cadastrar
+})
+
+
+
+
+/*
+  /$$$$$$  /$$$$$$$  /$$$$$$$$ /$$   /$$  /$$$$$$       
+ /$$__  $$| $$__  $$| $$_____/| $$$ | $$ /$$__  $$      
+| $$  \ $$| $$  \ $$| $$      | $$$$| $$| $$  \ $$      
+| $$$$$$$$| $$$$$$$/| $$$$$   | $$ $$ $$| $$$$$$$$      
+| $$__  $$| $$__  $$| $$__/   | $$  $$$$| $$__  $$      
+| $$  | $$| $$  \ $$| $$      | $$\  $$$| $$  | $$      
+| $$  | $$| $$  | $$| $$$$$$$$| $$ \  $$| $$  | $$      
+|__/  |__/|__/  |__/|________/|__/  \__/|__/  |__/      
+*/
+
+function inicialização_arena() {
+
+    listaPistas.innerHTML = "";
+
+
+    minhocas.forEach(element => {
+        const li = document.createElement("li");
+        li.classList.add("pista");
+
+        li.innerHTML = `
+        <div class="minhoca" id="${element.id}"style="background-color: ${element.cor}; width: ${element.progresso};">
+            <div class="rosto-minhoca">
+                <div class="olhos">
+                    <div class="olho"></div>
+                    <div class="olho"></div>
+        </div>
+        <div class="boca"></div>
+        </div>
+        </div>
+        `
+
+        li.appendChild(minhoca);
+        listaPistas.appendChild(li);
+
+    });
+}

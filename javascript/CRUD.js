@@ -12,7 +12,7 @@
 
 class minhoca {
     constructor(nome, cor) {
-        this.id = minhocaId++;
+        this.id = gerarIdHash(nome);
         this.nome = nome;
         this.cor = cor;
         this.progresso = 0;
@@ -25,12 +25,23 @@ class minhoca {
 //======================================
 var minhocas = JSON.parse(localStorage.getItem("minhocasDB")) || [];
 
-let minhocaId = minhocas.length > 0 ? Math.max(...minhocas.map(m => m.id)) + 1 : 0;
-
 function salvar_banco_local() {
     localStorage.setItem("minhocasDB",JSON.stringify(minhocas));
 }
 
+function gerarIdHash(nome){
+    //FUNÇÃO DE HASH DJB2
+    let stringBase = nome + performance.now() + Math.random();
+    let hash = 0;
+
+    for(let i = 0; i< stringBase.length; i++){
+        let char = stringBase.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+
+    return Math.floor(Math.abs(hash) / 100);
+}
 
 function cadastrar_minhoca(nome, cor) {
     var nova_minhoca = new minhoca(nome, cor);
@@ -39,6 +50,8 @@ function cadastrar_minhoca(nome, cor) {
     salvar_banco_local();
 
     console.log("Minhoca cadastrada:", nova_minhoca);
+
+    return nova_minhoca;
 }
 
 function listar_minhocas() {
@@ -204,9 +217,9 @@ if(formCadastro){
         const nome = document.getElementById("nome-cadastro").value;
         const cor = document.querySelector('input[name="cor-cadastro"]:checked').value;
     
-        cadastrar_minhoca(nome, cor);
+        const new_minhoca = cadastrar_minhoca(nome, cor);
     
-        criar_card(nome, cor, minhocaId - 1); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
+        criar_card(new_minhoca.nome, new_minhoca.cor, new_minhoca.id);
     
         formCadastro.reset(); // Reseta o formulário
         ToggleOverlay("overlay-cadastro"); // Fecha o modal após cadastrar

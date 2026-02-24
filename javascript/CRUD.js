@@ -9,7 +9,7 @@
  \______/ |__/       \______/  \_______/      |_______/  \_______/|_______/ |__/ \_______/ \______/                                                                                                     
 */
 
-let minhocaId = 0;
+
 class minhoca {
     constructor(nome, cor) {
         this.id = minhocaId++;
@@ -20,12 +20,24 @@ class minhoca {
     }
 }
 
-//CADASTRAR, LISTAR, ATUALIZAR, EXCLUIR
-var minhocas = [];
+//====================================
+//LOCAL STORAGE (Transitório pro banco)
+//======================================
+var minhocas = JSON.parse(localStorage.getItem("minhocasDB")) || [];
+
+let minhocaId = minhocas.length > 0 ? Math.max(...minhocas.map(m => m.id)) + 1 : 0;
+
+function salvar_banco_local() {
+    localStorage.setItem("minhocasDB",JSON.stringify(minhocas));
+}
+
 
 function cadastrar_minhoca(nome, cor) {
     var nova_minhoca = new minhoca(nome, cor);
     minhocas.push(nova_minhoca);
+
+    salvar_banco_local();
+
     console.log("Minhoca cadastrada:", nova_minhoca);
 }
 
@@ -41,6 +53,9 @@ function atualizar_minhoca(id, nome, cor) {
     if (minhoca) {
         minhoca.nome = nome;
         minhoca.cor = cor;
+
+        salvar_banco_local();
+
         console.log("Minhoca atualizada:", minhoca);
     } else {
         console.log("Minhoca não encontrada.");
@@ -51,6 +66,9 @@ function excluir_minhoca(id) {
     var index = minhocas.findIndex(m => m.id === id);
     if (index !== -1) {
         var minhocaExcluida = minhocas.splice(index, 1);
+
+        salvar_banco_local();
+
         console.log("Minhoca excluída:", minhocaExcluida[0]);
     } else {
         console.log("Minhoca não encontrada.");
@@ -82,8 +100,14 @@ const inputExcluir = document.getElementById("Id-excluir");
 const cardExclusaoPreview = document.getElementById("CardExclusao");
 const textoStatusExcluir = document.getElementById("isMinhocaFound");
 
-cardExclusaoPreview.classList.add("escondido");
+if (cardExclusaoPreview) {
+    cardExclusaoPreview.classList.add("escondido");
+}
 
+if (grid_minhocas.length > 0) {
+    grid_minhocas[0].innerHTML = ""; // Limpa a tela
+    minhocas.forEach(m => criar_card(m.nome, m.cor, m.id)); // Desenha o que tá no banco
+}
 
 //Constantes da arena
 const listaPistas = document.getElementById('pistas');
@@ -172,82 +196,89 @@ CADASTRO DE MINHOCAS - LÓGICA DE FUNCIONAMENTO
 ====================================================
 */
 
+if(formCadastro){
+    formCadastro.addEventListener("submit", (event) => {
+    
+        event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
+    
+        const nome = document.getElementById("nome-cadastro").value;
+        const cor = document.querySelector('input[name="cor-cadastro"]:checked').value;
+    
+        cadastrar_minhoca(nome, cor);
+    
+        criar_card(nome, cor, minhocaId - 1); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
+    
+        formCadastro.reset(); // Reseta o formulário
+        ToggleOverlay("overlay-cadastro"); // Fecha o modal após cadastrar
+    })
+}
 
-formCadastro.addEventListener("submit", (event) => {
-
-    event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
-
-    const nome = document.getElementById("nome-cadastro").value;
-    const cor = document.querySelector('input[name="cor-cadastro"]:checked').value;
-
-    cadastrar_minhoca(nome, cor);
-
-    criar_card(nome, cor, minhocaId - 1); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
-
-    formCadastro.reset(); // Reseta o formulário
-    ToggleOverlay("overlay-cadastro"); // Fecha o modal após cadastrar
-})
-
-formAtualizar.addEventListener("submit", (event) => {
-
-    event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
-
-    const id = parseInt(document.getElementById("Id-atualizar").value);
-    const NovoNome = document.getElementById("nome-atualizar").value;
-    const NovaCor = document.querySelector('input[name="cor-atualizar"]:checked').value;
-
-    atualizar_minhoca(id, NovoNome, NovaCor);
-
-    atualizar_card(id, NovoNome, NovaCor); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
-
-    formAtualizar.reset(); // Reseta o formulário
-    ToggleOverlay("overlay-atualizar"); // Fecha o modal após cadastrar
-})
+if(formAtualizar){
+    formAtualizar.addEventListener("submit", (event) => {
+    
+        event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
+    
+        const id = parseInt(document.getElementById("Id-atualizar").value);
+        const NovoNome = document.getElementById("nome-atualizar").value;
+        const NovaCor = document.querySelector('input[name="cor-atualizar"]:checked').value;
+    
+        atualizar_minhoca(id, NovoNome, NovaCor);
+    
+        atualizar_card(id, NovoNome, NovaCor); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
+    
+        formAtualizar.reset(); // Reseta o formulário
+        ToggleOverlay("overlay-atualizar"); // Fecha o modal após cadastrar
+    })
+}
 
 // RADAR
 
-inputExcluir.addEventListener("input", (event) => {
-    const idDigitado = parseInt(event.target.value);
-    const minhocaEncontrada = minhocas.find(m => m.id === idDigitado);
-
-    if (minhocaEncontrada) {
-        // Minhoca Achada
-        cardExclusaoPreview.querySelector(".nome-minhoca").textContent = minhocaEncontrada.nome;
-        cardExclusaoPreview.querySelector(".bolinha-cor").style.backgroundColor = minhocaEncontrada.cor;
-        cardExclusaoPreview.querySelector(".id-minhoca").textContent = `ID: ${minhocaEncontrada.id}`;
-
-        // Mostra o card
-        cardExclusaoPreview.classList.remove("escondido");
-        textoStatusExcluir.textContent = "Minhoca Encontrada! Tem certeza disso?";
-        textoStatusExcluir.style.color = "var(--rosa-morango)";
-
-    } else {
-        cardExclusaoPreview.classList.add("escondido");
-        textoStatusExcluir.textContent = "Minhoca não encontrada ainda...";
-        textoStatusExcluir.style.color = "var(--grafite)";
-    }
-})
+if(formExcluir){
+    inputExcluir.addEventListener("input", (event) => {
+        const idDigitado = parseInt(event.target.value);
+        const minhocaEncontrada = minhocas.find(m => m.id === idDigitado);
+    
+        if (minhocaEncontrada) {
+            // Minhoca Achada
+            cardExclusaoPreview.querySelector(".nome-minhoca").textContent = minhocaEncontrada.nome;
+            cardExclusaoPreview.querySelector(".bolinha-cor").style.backgroundColor = minhocaEncontrada.cor;
+            cardExclusaoPreview.querySelector(".id-minhoca").textContent = `ID: ${minhocaEncontrada.id}`;
+    
+            // Mostra o card
+            cardExclusaoPreview.classList.remove("escondido");
+            textoStatusExcluir.textContent = "Minhoca Encontrada! Tem certeza disso?";
+            textoStatusExcluir.style.color = "var(--rosa-morango)";
+    
+        } else {
+            cardExclusaoPreview.classList.add("escondido");
+            textoStatusExcluir.textContent = "Minhoca não encontrada ainda...";
+            textoStatusExcluir.style.color = "var(--grafite)";
+        }
+    })
+}
 
 
 
 
 //SUBMIT DO EXCLUIR
 
-formExcluir.addEventListener("submit", (event) => {
-
-    event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
-
-    const id = parseInt(inputExcluir.value);
-
-    excluir_minhoca(id);
-    excluir_card(id); // FUNÇÃO AINDA NÃO CRIADA        
-
-    formExcluir.reset(); // Reseta o formulário
-    cardExclusaoPreview.classList.add("escondido");
-    textoStatusExcluir.textContent = "Minhoca não encontrada ainda...";
-    textoStatusExcluir.style.color = "var(--grafite)";
-    ToggleOverlay("overlay-excluir"); // Fecha o modal após cadastrar
-})
+if(formExcluir){
+    formExcluir.addEventListener("submit", (event) => {
+    
+        event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
+    
+        const id = parseInt(inputExcluir.value);
+    
+        excluir_minhoca(id);
+        excluir_card(id); // FUNÇÃO AINDA NÃO CRIADA        
+    
+        formExcluir.reset(); // Reseta o formulário
+        cardExclusaoPreview.classList.add("escondido");
+        textoStatusExcluir.textContent = "Minhoca não encontrada ainda...";
+        textoStatusExcluir.style.color = "var(--grafite)";
+        ToggleOverlay("overlay-excluir"); // Fecha o modal após cadastrar
+    })
+}
 
 
 
@@ -263,29 +294,35 @@ formExcluir.addEventListener("submit", (event) => {
 |__/  |__/|__/  |__/|________/|__/  \__/|__/  |__/      
 */
 
-function inicialização_arena() {
+function inicializacao_arena() {
+    
+    if(!listaPistas) return;
 
     listaPistas.innerHTML = "";
-
 
     minhocas.forEach(element => {
         const li = document.createElement("li");
         li.classList.add("pista");
-
+        
         li.innerHTML = `
-        <div class="minhoca" id="${element.id}"style="background-color: ${element.cor}; width: ${element.progresso};">
+        <div class="minhoca" id="corredor-${element.id}" style="background-color: ${element.cor}; width: ${element.progresso}%;">
             <div class="rosto-minhoca">
                 <div class="olhos">
                     <div class="olho"></div>
                     <div class="olho"></div>
+                </div>
+                <div class="boca"></div>
+            </div>
         </div>
-        <div class="boca"></div>
-        </div>
-        </div>
-        `
+        `;
 
-        li.appendChild(minhoca);
+
         listaPistas.appendChild(li);
+    })
 
-    });
+}
+
+
+if(listaPistas){
+    inicializacao_arena();
 }

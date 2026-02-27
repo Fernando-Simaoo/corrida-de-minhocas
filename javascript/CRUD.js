@@ -74,22 +74,88 @@ async function cadastrar_minhoca(nome, cor) {
     return nova_minhoca;
 }
 
-function listar_minhocas() {
-    console.log("Minhocas cadastradas:");
-    minhocas.forEach(minhoca => {
-        console.log(`ID: ${minhoca.id}, Nome: ${minhoca.nome}, Cor: ${minhoca.cor}, Progresso: ${minhoca.progresso}`);
-    })
+async function listar_minhocas() {
+    console.log("Iniciando sincronização com o banco de dados...");
+
+    try {
+        // 1. Envia o cache local atual pro servidor e pede a lista oficial de volta
+        const resposta = await fetch('http://localhost/Trabalho-Web/api/api_sincronizar.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(minhocas)
+        });
+
+        const dadosServidor = await resposta.json();
+
+        if(dadosServidor.status === "sucesso") {
+            // 2. Sobrescreve a memória RAM e o Cache com a verdade do MySQL
+            // Como o PHP devolve os números como String em alguns casos, garantimos que o ID vire Inteiro de novo
+            minhocas = dadosServidor.minhocas.map(m => ({
+                ...m,
+                id: parseInt(m.id),
+                progresso: parseFloat(m.progresso),
+                velocidadeBase: parseFloat(m.velocidadeBase)
+            }));
+
+            salvar_banco_local();
+            console.log("Sincronização concluida",minhocas);
+
+            if (grid_minhocas.length > 0) {
+                grid_minhocas[0].innerHTML = ""; // Limpa a grade inteira
+                minhocas.forEach(m => criar_card(m.nome, m.cor, m.id)); // Desenha tudo fresco
+            }
+
+            alert("Sincronização realizada com sucesso!");
+        } else {
+            console.error("Erro do servidor:",dadosServidor.mensagem);
+        }
+    } catch(erro) {
+        console.error("Erro de conexão ao sincronizar:",erro);
+        alert("Servidor offline. Exibindo apenas dados locais");
+
+        // Fallback: Se o XAMPP estiver desligado, pelo menos ele redesenha a tela com o que tem no cache
+        if (grid_minhocas.length > 0) {
+            grid_minhocas[0].innerHTML = ""; 
+            minhocas.forEach(m => criar_card(m.nome, m.cor, m.id)); 
+        }
+    }
+
+
 }
 
-function atualizar_minhoca(id, nome, cor) {
+async function atualizar_minhoca(id, nome, cor) {
     var minhoca = minhocas.find(m => m.id === id);
+
     if (minhoca) {
         minhoca.nome = nome;
         minhoca.cor = cor;
-
+        // LocalStorage
         salvar_banco_local();
 
-        console.log("Minhoca atualizada:", minhoca);
+        console.log("Minhoca atualizada localmente:", minhoca);
+
+        try {
+            const resposta = await fetch('http://localhost/Trabalho-Web/api/api_atualizar.php',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: id, nome: nome, cor: cor})
+            });
+
+            const dadosServidor = await resposta.json();
+
+            if(dadosServidor.status === "sucesso") {
+                console.log("XAMPP Confirmou a atualização:",dadosServidor.mensagem);
+            } else {
+                console.warn("XAMPP Avisou:",dadosServidor.mensagem);
+            }
+        } catch(error) {
+            console.error("Erro de conexão com a API ao atualizar",error);
+        }
+
     } else {
         console.log("Minhoca não encontrada.");
     }
@@ -154,6 +220,9 @@ const formExcluir = document.getElementById("form-excluir");
 const inputExcluir = document.getElementById("Id-excluir");
 const cardExclusaoPreview = document.getElementById("CardExclusao");
 const textoStatusExcluir = document.getElementById("isMinhocaFound");
+
+//Botao do listar
+const btnListar = document.querySelector("#btn-listar");
 
 if (cardExclusaoPreview) {
     cardExclusaoPreview.classList.add("escondido");
@@ -269,7 +338,7 @@ if(formCadastro){
 }
 
 if(formAtualizar){
-    formAtualizar.addEventListener("submit", (event) => {
+    formAtualizar.addEventListener("submit", async (event) => {
     
         event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
     
@@ -277,7 +346,7 @@ if(formAtualizar){
         const NovoNome = document.getElementById("nome-atualizar").value;
         const NovaCor = document.querySelector('input[name="cor-atualizar"]:checked').value;
     
-        atualizar_minhoca(id, NovoNome, NovaCor);
+        await atualizar_minhoca(id, NovoNome, NovaCor);
     
         atualizar_card(id, NovoNome, NovaCor); // O ID é o contador - 1 porque ele já foi incrementado no cadastro
     
@@ -332,5 +401,12 @@ if(formExcluir){
         textoStatusExcluir.textContent = "Minhoca não encontrada ainda...";
         textoStatusExcluir.style.color = "var(--grafite)";
         ToggleOverlay("overlay-excluir"); // Fecha o modal após cadastrar
+    })
+}
+
+if(btnListar){
+    btnListar.addEventListener("click", async (event) => {
+        event.preventDefault();
+        await listar_minhocas();
     })
 }

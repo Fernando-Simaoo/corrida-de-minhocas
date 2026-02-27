@@ -43,13 +43,33 @@ function gerarIdHash(nome){
     return Math.floor(Math.abs(hash) / 100);
 }
 
-function cadastrar_minhoca(nome, cor) {
+async function cadastrar_minhoca(nome, cor) {
     var nova_minhoca = new minhoca(nome, cor);
+
     minhocas.push(nova_minhoca);
-
     salvar_banco_local();
+    console.log("Minhoca cadastrada localmente:", nova_minhoca);
 
-    console.log("Minhoca cadastrada:", nova_minhoca);
+    //Passagem pro banco SQL
+    try {
+        const resposta = await fetch('http://localhost/Trabalho-Web/api/api_cadastrar.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(nova_minhoca)
+        });
+
+        const dadosServidor = await resposta.json();
+
+        if(dadosServidor.status === "sucesso") {
+            console.log("Xampp Confirmou:",dadosServidor.mensagem);
+        }else {
+            console.error("Xampp Recusou:",dadosServidor.mensagem);
+        }
+    }catch(erro){
+        console.error("Erro de conexão com a API",erro);
+    }
 
     return nova_minhoca;
 }
@@ -75,14 +95,36 @@ function atualizar_minhoca(id, nome, cor) {
     }
 }
 
-function excluir_minhoca(id) {
+async function excluir_minhoca(id) {
     var index = minhocas.findIndex(m => m.id === id);
+
     if (index !== -1) {
         var minhocaExcluida = minhocas.splice(index, 1);
-
+        //Local Storage
         salvar_banco_local();
+        console.log("Minhoca excluída localmente:", minhocaExcluida[0]);
+        //Banco SQL
+        try {
+            const resposta = await fetch('http://localhost/Trabalho-Web/api/api_excluir.php',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: id})
+        });
 
-        console.log("Minhoca excluída:", minhocaExcluida[0]);
+        const dadosServidor = await resposta.json();
+
+        if(dadosServidor.status === "sucesso") {
+            console.log("XAMPP Confirmou a exclusao:", dadosServidor.mensagem);
+        } else {
+            console.error("XAMPP Avisou:", dadosServidor.mensagem);
+        }
+
+    } catch(erro) {
+        console.error("Erro de conexão com a API ao excluir:",erro);
+    }
+
     } else {
         console.log("Minhoca não encontrada.");
     }
@@ -210,14 +252,14 @@ CADASTRO DE MINHOCAS - LÓGICA DE FUNCIONAMENTO
 */
 
 if(formCadastro){
-    formCadastro.addEventListener("submit", (event) => {
+    formCadastro.addEventListener("submit", async (event) => {
     
         event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
     
         const nome = document.getElementById("nome-cadastro").value;
         const cor = document.querySelector('input[name="cor-cadastro"]:checked').value;
     
-        const new_minhoca = cadastrar_minhoca(nome, cor);
+        const new_minhoca = await cadastrar_minhoca(nome, cor);
     
         criar_card(new_minhoca.nome, new_minhoca.cor, new_minhoca.id);
     
@@ -276,13 +318,13 @@ if(formExcluir){
 //SUBMIT DO EXCLUIR
 
 if(formExcluir){
-    formExcluir.addEventListener("submit", (event) => {
+    formExcluir.addEventListener("submit", async (event) => {
     
         event.preventDefault(); // NÃO ATUALIZA A PÁGINA PRA PODER USAR ARMAZENAMENTO NO ARRAY
     
         const id = parseInt(inputExcluir.value);
     
-        excluir_minhoca(id);
+        await excluir_minhoca(id);
         excluir_card(id); // FUNÇÃO AINDA NÃO CRIADA        
     
         formExcluir.reset(); // Reseta o formulário

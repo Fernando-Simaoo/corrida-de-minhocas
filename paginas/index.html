@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
-        <!--META TAGS-->
-        <meta charset = "UTF-8">
-        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Conheça o projeto mais caótico da internet!">
         <meta name="author" content="Fernando Simão">
         <title>Sobre Nós</title>
 
-        <!--SCRIPTS-->
         <script src="../javascript/gerador.js" defer></script>
-             
-        <!--FONTES-->
+        <script src="../javascript/graficos.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
         <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 
-        <!--MEU CSS-->
         <link rel="stylesheet" href="./css/main.css">
     </head>
     <body>
-        <!--NAV BAR, mesma em todos arquivos-->
         <header>
             <nav class="navbar-caos">
                 <a href="./index.html" class="btn-massinha btn-navbar">Sobre o Projeto</a>
@@ -31,18 +27,44 @@
         </header>
 
         <h1 class="titulo-destaque">Sobre o Projeto</h1>
-        <p class="texto-artigo">Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-        Distinctio similique odit aliquam eum neque sapiente, aperiam
-        obcaecati corrupti veritatis blanditiis? Aliquam eius enim, 
-        voluptas aut veniam corporis. Tempore, ea repudiandae.Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-        Distinctio similique odit aliquam eum neque </p>
-        <p class="texto-artigo">
-               Lorem ipsum dolor, sit amet consectetur 
-               adipisicing elit. Eligendi officiis explicabo 
-               voluptas! Possimus eveniet iure quisquam earum doloremque 
-               veritatis provident voluptatum minima perferendis tempora! Dignissimos 
-               fugiat quibusdam ipsa cum delectus!
-        </p>
+        
+        <p class="texto-artigo">Seja bem-vindo ao projeto mais caótico de toda a web! Aqui nós traduzimos dados da vida real, como o preço do Bitcoin e a velocidade do vento no Ponto Nemo, e os transformamos em uma corrida de minhoquinhas interativa para você e seus amigos!</p>
+        
+        <p class="texto-artigo">Acreditamos que a pseudo-aleatoriedade dos computadores não é o bastante. Portanto, aqui nos posicionamos como um alívio do algoritmo determinístico que buscamos no dia a dia e abraçamos o caos para celebrar o quão dinâmico e imprevisível é o nosso mundo.</p>
+        
+        <p class="texto-artigo">Para determinar a velocidade de cada uma das minhoquinhas em tempo real durante a corrida, nós lidamos com vários dados do mundo real por meio de consumo de APIs e os transformamos em um número inteiro para ser digerido pelo nosso algoritmo. Os dados que usamos são: o preço atual do Bitcoin, a velocidade do vento no Ponto Nemo (a parte mais isolada do oceano), e uma lista (meticulosamente) selecionada de filmes do Adam Sandler.</p>
+        
+        <p class="texto-artigo">Aqui está o preço do Bitcoin, atualizado a cada 30 segundos (menos que isso acarretaria em um bloqueio da API):</p>
+        
+        <div class="grafico-massinha">
+             <canvas id="graficoBitcoin"></canvas>
+        </div>
+
+        <p class="texto-artigo">E aqui vai a velocidade do vento atualmente no Ponto Nemo:</p>
+
+        <div class="grafico-massinha">
+            <canvas id="graficoNemo"></canvas>
+        </div>
+        
+        <p class="texto-artigo">Quanto à lista de filmes do Adam Sandler que utilizamos, nós temos:</p>
+        <ul class="texto-artigo">
+            <li>Click</li>
+            <li>Jack e Jill</li>
+            <li>Gente Grande</li>
+            <li>Joias Brutas</li>
+            <li>O Paizão</li>
+            <li>Pixels</li>
+        </ul>
+        
+        <p class="texto-artigo">Mas você pode estar se perguntando agora: "Ah, mas como esse algoritmo funciona?". Excelente pergunta! Primeiramente, nós salvamos em uma variável de cache os dados do preço do Bitcoin e da velocidade do vento no Ponto Nemo. Afinal, essas requisições são a parte mais pesada e demorada do processo, e realizá-las a cada 50ms (a velocidade do *clock* do nosso jogo) iria resultar em um bloqueio por parte das APIs. Então, dentro de uma mesma corrida, esses valores são constantes.</p>
+        
+        <p class="texto-artigo">O que realmente é calculado a cada 50ms no loop de velocidade de cada minhoca é a mistura do fator Sandler com o cronômetro do <code>performance.now()</code>. Talvez eu esteja falando grego para você que não faz parte da área de tecnologia, mas o <code>performance.now()</code> é um cronômetro de extrema precisão nativo dos navegadores, que calcula quanto tempo faz desde que a página foi carregada chegando na casa dos microssegundos! O que é muito útil pra trazer mais caos pro nosso algoritmo.</p>
+        
+        <p class="texto-artigo">Mas obviamente, nós não podemos tratar um texto como um número. Então como fazemos para transformar a lista de filmes do Adam Sandler em um valor útil? Na realidade, nós grudamos todos os filmes um atrás do outro formando uma sequência gigante de caracteres (ex: "JackeJillClickGenteGrande"). Aí, o nosso algoritmo gira uma roleta, escolhe uma letra aleatória dessa palavra gigante e transforma essa letra em número usando a cifra A1Z26, onde A vale 1, B vale 2, e Z vale 26.</p>
+        
+        <p class="texto-artigo">Depois disso é só multiplicar tudo, dividir por 10.000 e pegar o resto a cada 50ms, resultando na seguinte fórmula:</p>
+        
+        <p class="texto-artigo"><code>Velocidade = [PreçoBitcoin * VentoNemo * fatorSandler * performance.now()] % 10000</code></p>
 
     </body>
 </html>
